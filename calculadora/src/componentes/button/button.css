@@ -1,0 +1,39 @@
+:root{
+    --btn-default: #ecf0f1;
+    --btn-dark: #bdc3c7;
+    --text-default:#34495e;
+    --text-dark:#f1c40f;
+    --btn-sizeText: 1.4em;
+}
+
+.button {
+    background-color: var(--btn-default);
+    color: var(--text-default);
+    font-size: 1.4em;
+    outline: none;
+    cursor: pointer;
+}
+
+.button:active {
+   background-color: var(--btn-dark);
+   color: var(--text-dark)
+}
+
+.button.double {
+    grid-column:span 2;
+}
+
+.button.triple{
+    grid-column: span 3;
+}
+
+.button.operation:{
+    background-color: #f1c40f;
+    color: #7f8cbd;   
+}
+
+.button.operation:active {
+    background-color: #f39c12;
+    color: #2c3e50;
+    
+}

@@ -1,0 +1,13 @@
+*{
+ font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+body{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  background: #24c6dc; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #24c6dc, #514a9d); 
+  background: linear-gradient(to top, #24c6dc, #514a9d); 
+}

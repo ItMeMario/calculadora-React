@@ -1,0 +1,20 @@
+.display{
+    --btn-display: #34495e;
+    --text-display: #f1c40f;
+}
+
+.display{
+    background-color: var(--bg--display);
+    color: var(--text-display);
+    font-size: 2em;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    grid-column: span 4;
+    display: flex;
+    justify-content: flex-end;
+    align-items: 20px;
+    justify-content: flex-end;
+    align-items: 20px;
+    overflow: hidden;
+}
+
