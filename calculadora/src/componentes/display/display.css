@@ -1,20 +1,21 @@
-.display{
-    --btn-display: #34495e;
-    --text-display: #f1c40f;
+.display {
+    --bg--display: #0004;
+    --text-display: #fff;
 }
 
-.display{
+.display {
     background-color: var(--bg--display);
     color: var(--text-display);
-    font-size: 2em;
+    font-size: 1.5em;
+    /* Reduced size to fit more text */
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     grid-column: span 4;
     display: flex;
     justify-content: flex-end;
-    align-items: 20px;
-    justify-content: flex-end;
-    align-items: 20px;
+    align-items: center;
+    padding: 20px;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
-

@@ -6,10 +6,7 @@ import Display from '../componentes/display/display';
 
 const initialState = {
     displayValue: '0',
-    clearDisplay: false,
-    operation: null,
-    values: [0, 0],
-    current: 0
+    calculated: false
 }
 
 export default class Calculadora extends Component {
@@ -28,53 +25,78 @@ export default class Calculadora extends Component {
     }
 
     setOperation(operation) {
-        if (this.state.current === 0) {
-            this.setState({ operation, current: 1, clearDisplay: true })
-        } else {
-            const equals = operation === '='
-            const currentOperation = this.state.operation
-
-            const values = [...this.state.values]
-            try {
-                // eslint-disable-next-line
-                values[0] = eval(`${values[0]} ${currentOperation} ${values[1]}`)
-                if (isNaN(values[0]) || !isFinite(values[0])) {
-                    this.clearMemory()
-                    return
-                }
-            } catch (e) {
-                values[0] = this.state.values[0]
-            }
-
-            values[1] = 0
-
-            this.setState({
-                displayValue: values[0].toString(),
-                operation: equals ? null : operation,
-                current: equals ? 0 : 1,
-                clearDisplay: !equals,
-                values
-            })
+        if (operation === '=') {
+            this.calculate()
+            return
         }
+
+        let { displayValue, calculated } = this.state
+
+        if (calculated) {
+            // If we just calculated "1+1 = 2", and user hits "+", we want "2+"
+            // We extract the result (number after the last ' ')
+            const parts = displayValue.split(' = ')
+            displayValue = parts[parts.length - 1]
+            calculated = false
+        } else if (displayValue === '0') {
+            // Avoid "0+" unless desired, but usually okay. 
+            // If user wants negative number, they might type "-".
+            // Let's allow standard behavior.
+        }
+
+        // Prevent double operators (e.g. "1++")
+        const lastChar = displayValue.slice(-1)
+        if (['+', '-', '*', '/'].includes(lastChar)) {
+            // Replace last operator
+            displayValue = displayValue.slice(0, -1) + operation
+        } else {
+            displayValue = displayValue + operation
+        }
+
+        this.setState({ displayValue, calculated })
     }
 
     addDigit(n) {
         if (n === '.' && this.state.displayValue.includes('.')) {
-            return
+            // This is a naive check. Ideally we check the *current number segment*.
+            // But for simple expression logic, we check if the last number has a dot.
+            const segments = this.state.displayValue.split(/[\+\-\*\/]/)
+            const currentSegment = segments[segments.length - 1]
+            if (currentSegment.includes('.')) return
         }
 
-        const clearDisplay = this.state.displayValue === '0'
-            || this.state.clearDisplay
-        const currentValue = clearDisplay ? '' : this.state.displayValue
-        const displayValue = currentValue + n
-        this.setState({ displayValue, clearDisplay: false })
+        let { displayValue, calculated } = this.state
 
-        if (n !== '.') {
-            const i = this.state.current
-            const newValue = parseFloat(displayValue)
-            const values = [...this.state.values]
-            values[i] = newValue
-            this.setState({ values })
+        if (calculated) {
+            displayValue = n
+            calculated = false
+        } else {
+            // Remove leading zero if it's the only char, unless typing '.'
+            if (displayValue === '0' && n !== '.') {
+                displayValue = n
+            } else {
+                displayValue = displayValue + n
+            }
+        }
+
+        this.setState({ displayValue, calculated })
+    }
+
+    calculate() {
+        if (this.state.calculated) return
+
+        try {
+            // eslint-disable-next-line
+            const result = eval(this.state.displayValue) // Be careful with eval generally, but okay for this scope
+
+            if (isNaN(result) || !isFinite(result)) {
+                this.setState({ displayValue: 'Error', calculated: true })
+            } else {
+                const newDisplay = `${this.state.displayValue} = ${result}`
+                this.setState({ displayValue: newDisplay, calculated: true })
+            }
+        } catch (e) {
+            this.setState({ displayValue: 'Error', calculated: true })
         }
     }
 
