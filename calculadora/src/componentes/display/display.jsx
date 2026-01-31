@@ -1,8 +1,8 @@
 import React from 'react';
-import './Display.css'
+import './display.css'
 
 export default proops =>
-<div className='display'>
-    {proops.value}
-</div>
+    <div className='display'>
+        {proops.value}
+    </div>
 

@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 // import App from './App';
-import from calculadora from './main/calculadora';
+import Calculadora from './main/calculadora';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <div><h1>calculadora</h1></div>
-    <calculadora />
+    <div><h1>Calculator</h1></div>
+    <Calculadora />
     
   </React.StrictMode>,
   document.getElementById('root')
